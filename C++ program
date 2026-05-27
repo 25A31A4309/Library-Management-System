@@ -1,0 +1,212 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+struct Book
+{
+    int id;
+    string title;
+    string author;
+    bool issued;
+};
+
+Book books[100];
+int totalBooks = 0;
+
+void addBook()
+{
+    cout << "\nEnter Book ID: ";
+    cin >> books[totalBooks].id;
+
+    cin.ignore();
+
+    cout << "Enter Book Title: ";
+    getline(cin, books[totalBooks].title);
+
+    cout << "Enter Author Name: ";
+    getline(cin, books[totalBooks].author);
+
+    books[totalBooks].issued = false;
+
+    totalBooks++;
+
+    cout << "\nBook Added Successfully!\n";
+}
+
+
+void displayBooks()
+{
+    if (totalBooks == 0)
+    {
+        cout << "\nNo Books Available!\n";
+        return;
+    }
+
+    cout << "\n===== BOOK LIST =====\n";
+
+    for (int i = 0; i < totalBooks; i++)
+    {
+        cout << "\nBook ID: " << books[i].id;
+        cout << "\nTitle: " << books[i].title;
+        cout << "\nAuthor: " << books[i].author;
+
+        if (books[i].issued)
+            cout << "\nStatus: Issued";
+        else
+            cout << "\nStatus: Available";
+
+        cout << "\n----------------------\n";
+    }
+}
+
+void searchBook()
+{
+    string keyword;
+    bool found = false;
+
+    cin.ignore();
+
+    cout << "\nEnter Book Title or Author: ";
+    getline(cin, keyword);
+
+    for (int i = 0; i < totalBooks; i++)
+    {
+        if (books[i].title == keyword || books[i].author == keyword)
+        {
+            cout << "\nBook Found!\n";
+            cout << "Book ID: " << books[i].id << endl;
+            cout << "Title: " << books[i].title << endl;
+            cout << "Author: " << books[i].author << endl;
+
+            if (books[i].issued)
+                cout << "Status: Issued\n";
+            else
+                cout << "Status: Available\n";
+
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "\nBook Not Found!\n";
+    }
+}
+
+
+void issueBook()
+{
+    int id;
+    bool found = false;
+
+    cout << "\nEnter Book ID to Issue: ";
+    cin >> id;
+
+    for (int i = 0; i < totalBooks; i++)
+    {
+        if (books[i].id == id)
+        {
+            found = true;
+
+            if (books[i].issued)
+            {
+                cout << "\nBook Already Issued!\n";
+            }
+            else
+            {
+                books[i].issued = true;
+                cout << "\nBook Issued Successfully!\n";
+            }
+        }
+    }
+
+    if (!found)
+    {
+        cout << "\nBook ID Not Found!\n";
+    }
+}
+
+void returnBook()
+{
+    int id;
+    bool found = false;
+
+    cout << "\nEnter Book ID to Return: ";
+    cin >> id;
+
+    for (int i = 0; i < totalBooks; i++)
+    {
+        if (books[i].id == id)
+        {
+            found = true;
+
+            if (!books[i].issued)
+            {
+                cout << "\nBook is Already Available!\n";
+            }
+            else
+            {
+                books[i].issued = false;
+                cout << "\nBook Returned Successfully!\n";
+            }
+        }
+    }
+
+    if (!found)
+    {
+        cout << "\nBook ID Not Found!\n";
+    }
+}
+
+int main()
+{
+    int choice;
+
+    do
+    {
+        cout << "\n========== LIBRARY MANAGEMENT SYSTEM ==========\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display Books\n";
+        cout << "3. Search Book\n";
+        cout << "4. Issue Book\n";
+        cout << "5. Return Book\n";
+        cout << "6. Exit\n";
+
+        cout << "\nEnter Your Choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            addBook();
+            break;
+
+        case 2:
+            displayBooks();
+            break;
+
+        case 3:
+            searchBook();
+            break;
+
+        case 4:
+            issueBook();
+            break;
+
+        case 5:
+            returnBook();
+            break;
+
+        case 6:
+            cout << "\nThank You!\n";
+            break;
+
+        default:
+            cout << "\nInvalid Choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
